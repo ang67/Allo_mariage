@@ -1,8 +1,8 @@
-import 'package:allo_mariage/utils/ui_constantes.dart';
+import 'package:allo_mariage/views/authHub/authHub.dart';
 import 'package:allo_mariage/views/theme.dart';
+import 'package:allo_mariage/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 void main() {
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       home: new SplashScreen(
         seconds: 3,
         //navigateAfterSeconds: new BaseScreen(),
-        navigateAfterSeconds: new TansitionScreen(),
+        navigateAfterSeconds: new Wrapper(),
         title: new Text(
           'AlloEvent',
           style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
@@ -43,74 +43,6 @@ class MyApp extends StatelessWidget {
 
       //   //
       // },
-    );
-  }
-}
-
-class TansitionScreen extends StatelessWidget {
-  bool skip = false;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Container(
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              //logo
-              FlutterLogo(
-                size: 150,
-              ),
-              Text(APP_NAME),
-              Text(APP_SLOGAN),
-              //Facebook signIn button
-              SignInButton(
-                Buttons.Facebook,
-                text: 'Continuer avec Facebook',
-                onPressed: () {
-                  print('Continuer avec Facebook');
-                },
-              ),
-
-              //google signIn button
-              SignInButton(
-                Buttons.Google,
-                text: 'Continuer avec Google',
-                onPressed: () {
-                  print('Continuer avec Google');
-                },
-              ),
-              //default connection button
-              SignInButtonBuilder(
-                text: "S'inscrire avec un email",
-                icon: Icons.email,
-                iconColor: Colors.grey,
-                onPressed: () {},
-                backgroundColor: Colors.white,
-                textColor: Colors.black54,
-              ),
-              //register  button
-              FlatButton(
-                onPressed: () {},
-                child: Text(
-                  'Se connecter',
-                  style: TextStyle(fontSize: 15, color: Colors.black54),
-                ),
-              ),
-              //skip button
-              FlatButton(
-                child: Text(
-                  'Me connecter plus tard',
-                  style: TextStyle(fontSize: 15, color: Colors.black54),
-                ),
-                onPressed: () {},
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

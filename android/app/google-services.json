@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1041880803031",
+    "firebase_url": "https://allo-mariage.firebaseio.com",
+    "project_id": "allo-mariage",
+    "storage_bucket": "allo-mariage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041880803031:android:40c5f0c16a8bfd50bd7292",
+        "android_client_info": {
+          "package_name": "com.example.allo_mariage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1041880803031-vog8smd1d3poi68mq2lseqdjn96bsqtj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALWmcy1meyl7-AnBE0moKHQ5-ndileFos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1041880803031-vog8smd1d3poi68mq2lseqdjn96bsqtj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
