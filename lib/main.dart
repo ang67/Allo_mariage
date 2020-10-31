@@ -1,12 +1,17 @@
+import 'package:allo_mariage/services/authService.dart';
+import 'package:allo_mariage/utils/ui_constantes.dart';
 import 'package:allo_mariage/views/authHub/authHub.dart';
 import 'package:allo_mariage/views/theme.dart';
 import 'package:allo_mariage/wrapper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:splashscreen/splashscreen.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(new MyApp());
@@ -14,35 +19,32 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final String title = "AlloEvent";
+  final String title = APP_NAME;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: title,
-      theme: buildBaseTheme(),
-      home: new SplashScreen(
-        seconds: 3,
-        //navigateAfterSeconds: new BaseScreen(),
-        navigateAfterSeconds: new Wrapper(),
-        title: new Text(
-          'AlloEvent',
-          style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
+    return MultiProvider(
+      providers: [
+        Provider<AuthService>(
+          create: (_) => AuthService(FirebaseAuth.instance),
         ),
-        image: new Image.network(
-            'https://flutter.io/images/catalog-widget-placeholder.png'),
-        backgroundColor: Colors.white,
-        styleTextUnderTheLoader: new TextStyle(),
-        photoSize: 100.0,
-        loaderColor: Theme.of(context).accentColor,
-      ),
-      initialRoute: '/',
-      // routes: {
-      //   '/help': (context) => HelpScreen(),
-      //   '/about': (context) => AboutAppPage(),
+        StreamProvider(
+          create: (context) => context.read<AuthService>().authStateChanges,
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: title,
+        theme: buildBaseTheme(),
+        home: AuthHub(),
+        initialRoute: '/',
+        routes: {
+          //'/help': (context) => HelpScreen(),
+          //'/about': (context) => AboutAppPage(),
+          '/Wrapper': (context) => Wrapper(),
 
-      //   //
-      // },
+          //
+        },
+      ),
     );
   }
 }

@@ -1,4 +1,6 @@
+import 'package:allo_mariage/services/authService.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BaseScreen extends StatefulWidget {
   @override
@@ -11,7 +13,12 @@ class _BaseScreenState extends State<BaseScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Text('Hello world !'),
+        child: FlatButton(
+          onPressed: () {
+            context.read<AuthService>().signOut();
+          },
+          child: Text('SignOut'),
+        ),
       ),
     );
   }
