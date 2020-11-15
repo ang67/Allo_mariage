@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">allo_mariage</string>
+    <string name="facebook_app_id">787450285443929</string>
+    <string name="fb_login_protocol_scheme">fb787450285443929</string>
+
+</resources>

@@ -60,6 +60,7 @@ class _AuthHubState extends State<AuthHub> {
                       text: 'Continuer avec Facebook',
                       onPressed: () {
                         print('Continuer avec Facebook');
+                        context.read<AuthService>().facebookLogIn();
                       },
                     ),
 

@@ -50,6 +50,7 @@ class _RegisterState extends State<Register> {
             text: 'Continuer avec Facebook',
             onPressed: () {
               print('Continuer avec Facebook');
+              context.read<AuthService>().facebookLogIn();
             },
           ),
           SizedBox(height: 10.0),
