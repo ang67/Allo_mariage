@@ -1,3 +1,4 @@
+import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
 import 'package:allo_mariage/views/auth/register.dart';
 import 'package:allo_mariage/views/auth/signIn.dart';
@@ -67,7 +68,7 @@ class _AuthHubState extends State<AuthHub> {
                       Buttons.Google,
                       text: 'Continuer avec Google',
                       onPressed: () {
-                        print('Continuer avec Google');
+                        context.read<AuthService>().googleSignIn();
                       },
                     ),
                     //default connection button

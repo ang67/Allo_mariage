@@ -50,7 +50,7 @@ class _SignInState extends State<SignIn> {
             Buttons.Google,
             text: 'Continuer avec Google',
             onPressed: () {
-              print('Continuer avec Google');
+              context.read<AuthService>().googleSignIn();
             },
           ),
           SizedBox(height: 10.0),

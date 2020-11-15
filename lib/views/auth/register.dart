@@ -58,7 +58,7 @@ class _RegisterState extends State<Register> {
             Buttons.Google,
             text: 'Continuer avec Google',
             onPressed: () {
-              print('Continuer avec Google');
+              context.read<AuthService>().googleSignIn();
             },
           ),
           SizedBox(height: 10.0),
