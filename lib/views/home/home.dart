@@ -1,4 +1,5 @@
 import 'package:allo_mariage/utils/ui_constantes.dart';
+import 'package:allo_mariage/views/widgets/search/search_field.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -13,9 +14,13 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text(APP_NAME),
       ),
-      body: Center(
-        child: Icon(Icons.home),
-      ),
+      body: ListView(children: <Widget>[
+        Container(
+            child: Column(children: <Widget>[
+          SizedBox(height: 30),
+          SearchField(),
+        ]))
+      ]),
     );
   }
 }

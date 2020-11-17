@@ -1,30 +1,30 @@
 class User {
   final String id;
-  final String email;
+  final String name;
   final String telephone;
+  final String email;
   final String role;
-  final String firstname;
 
   User({
     this.id,
-    this.email,
+    this.name,
     this.telephone,
+    this.email,
     this.role,
-    this.firstname,
   });
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        email = json['email'],
+        name = json['name'],
         telephone = json['telephone'],
-        role = json['role'],
-        firstname = json['firstname'];
+        email = json['email'],
+        role = json['role'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'email': email,
+        'name': name,
         'telephone': telephone,
-        'role': role,
-        'firstname': firstname,
+        'email': email,
+        'role': role
       };
 }

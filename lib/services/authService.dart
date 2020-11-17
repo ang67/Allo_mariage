@@ -1,3 +1,5 @@
+import 'package:allo_mariage/services/FirestoreService.dart';
+import 'package:allo_mariage/models/user.dart' as models;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,6 +10,18 @@ class AuthService {
   AuthService(this._firebaseAuth);
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FacebookAuth _facebookAuth = FacebookAuth.instance;
+  final FirestoreService _firestoreService = FirestoreService();
+  //models.User _currentUser;
+
+  // Future<models.User> currentUser(String uid) async {
+  //   return await _firestoreService.getUser(uid);
+  // }
+
+  // Future _populateCurrentUser(User user) async {
+  //   if (user != null) {
+  //     _currentUser = await _firestoreService.getUser(user.uid);
+  //   }
+  // }
 
   /// Changed to idTokenChanges as it updates depending on more cases.
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
@@ -21,14 +35,32 @@ class AuthService {
 
   //Register with email and password
   Future<String> signUp(
-      {String email, String password, String telephone, String role}) async {
+      {String name,
+      String email,
+      String password,
+      String telephone,
+      String role}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-
+      print(""" $name,
+      $email,
+        $password,
+        $telephone,
+        $role
+       """);
+      UserCredential result = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      //User fireBaseUser = result.user;
+      _firestoreService.updateUserData(models.User(
+          id: result.user.uid,
+          name: name,
+          telephone: telephone,
+          email: email,
+          role: role));
+      //await _populateCurrentUser(fireBaseUser);
       return "Signed up";
-    } on FirebaseAuthException catch (e) {
-      return e.message;
+    } catch (e) {
+      print(e.toString());
+      return null;
     }
   }
 

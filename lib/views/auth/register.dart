@@ -14,24 +14,28 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
+  String name = '';
+  String telephone = '';
   String email = '';
   String password = '';
-  String telephone = '';
   String role = '';
+
   String error = '';
   bool isObscure = true;
   bool _termsChecked = false;
-  List<String> roles = [
-    'Mariée',
-    'Marié',
-    'Famille',
-    'Invités',
-    'Prestataires'
-  ];
+
+  List<String> roles = ['Mariée', 'Marié', 'Famille', 'Invité', 'Prestataire'];
+  @override
+  void initState() {
+    super.initState();
+    role = roles[0];
+  }
 
   @override
   Widget build(BuildContext context) {
-    role = roles[0];
+    RegExp expName =
+        RegExp(r"^[a-zA-Z]+([ \-']?[a-zA-Z]+[ \-']?[a-zA-Z]+[ \-']?)[a-zA-Z]+");
+
     return /*loading
         ? Loading()
         : */
@@ -105,7 +109,7 @@ class _RegisterState extends State<Register> {
                       keyboardType: TextInputType.text,
                       style: Theme.of(context).textTheme.bodyText1.copyWith(),
                       decoration: InputDecoration(
-                        hintText: ' Prénom...',
+                        hintText: ' Prénom et nom...',
                         hintStyle: TextStyle(
                             color: Colors.black38,
                             fontStyle: FontStyle.italic,
@@ -123,9 +127,11 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                       validator: (val) =>
-                          val.isEmpty ? 'Saisir votre prénom' : null,
+                          (val.isEmpty || (!expName.hasMatch(val)))
+                              ? 'Saisir votre prénom et nom}'
+                              : null,
                       onChanged: (val) {
-                        setState(() => telephone = val);
+                        setState(() => name = val);
                       }),
                   SizedBox(height: 10.0),
                   TextFormField(
@@ -280,6 +286,7 @@ class _RegisterState extends State<Register> {
                               if (_formKey.currentState.validate()) {
                                 setState(() => loading = true);
                                 var result = context.read<AuthService>().signUp(
+                                    name: name,
                                     email: email,
                                     password: password,
                                     telephone: telephone,
@@ -288,7 +295,6 @@ class _RegisterState extends State<Register> {
                                   setState(() => error =
                                       'Impossible de se connecter avec cet identifiant !');
                                   loading = false;
-                                  print(error);
                                 } else {
                                   //Navigator.pop(context, null);
                                 }

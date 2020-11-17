@@ -14,10 +14,11 @@ class AuthHub extends StatefulWidget {
 }
 
 class _AuthHubState extends State<AuthHub> {
+  bool signedAnonymously = false;
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
-    if (firebaseUser != null) {
+    if (firebaseUser != null || signedAnonymously) {
       return BaseScreen();
     } else {
       return Scaffold(
@@ -119,7 +120,11 @@ class _AuthHubState extends State<AuthHub> {
                             color: Colors.pink,
                             fontWeight: FontWeight.bold),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          signedAnonymously = true;
+                        });
+                      },
                     ),
                   ],
                 ),
