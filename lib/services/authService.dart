@@ -78,6 +78,7 @@ class AuthService {
   // googleSignIn
   Future googleSignIn() async {
     try {
+      var now = new DateTime.now();
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
       GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount.authentication;
@@ -86,9 +87,22 @@ class AuthService {
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken);
 
-      var result = (await _firebaseAuth.signInWithCredential(credential));
+      var user = (await _firebaseAuth.signInWithCredential(credential)).user;
 
-      return result.user;
+      //if it is first time
+      bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
+      // print(user);
+      // print('$firstTime, $now, ${user.metadata.creationTime}');
+      firstTime
+          ? _firestoreService.updateUserData(models.User(
+              id: user.uid,
+              name: user.displayName,
+              email: user.email,
+              telephone: user.phoneNumber,
+              role: 'Invité'))
+          : print('');
+
+      return user;
     } catch (e) {
       print(e.toString());
       return null;
@@ -123,8 +137,9 @@ class AuthService {
   //   }
   // }
 
-  Future<UserCredential> facebookLogIn() async {
+  Future facebookLogIn() async {
     try {
+      var now = new DateTime.now();
       // Trigger the sign-in flow
       AccessToken accessToken = await _facebookAuth.login();
 
@@ -133,11 +148,24 @@ class AuthService {
           FacebookAuthProvider.credential(accessToken.token);
 
       // Once signed in, return the UserCredential
-      var result =
-          await _firebaseAuth.signInWithCredential(facebookAuthCredential);
+      var user =
+          (await _firebaseAuth.signInWithCredential(facebookAuthCredential))
+              .user;
       print("*/*/*/Facebook user */*/*");
-      print(result);
-      return result;
+      //if it is first time
+      bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
+      // print(user);
+      // print('$firstTime, $now, ${user.metadata.creationTime}');
+      firstTime
+          ? _firestoreService.updateUserData(models.User(
+              id: user.uid,
+              name: user.displayName,
+              email: user.email,
+              telephone: user.phoneNumber,
+              role: 'Invité'))
+          : print('');
+      //print(user);
+      return user;
     } catch (e) {
       print(e.toString());
       return null;
