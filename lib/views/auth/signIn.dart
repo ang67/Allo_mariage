@@ -22,11 +22,8 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return /*loading
-        ? Loading()
-        :*/
-        Scaffold(
-            body: Container(
+    return Scaffold(
+        body: Container(
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
       child: ListView(
         primary: true,
@@ -175,7 +172,6 @@ class _SignInState extends State<SignIn> {
                                 email: email,
                                 password: password,
                               );
-
                           if (result == null) {
                             setState(() => error =
                                 'Entrez un email ou numéro de téléphone valide !');
@@ -183,6 +179,7 @@ class _SignInState extends State<SignIn> {
                             print(error);
                           } else {
                             //Navigator.pop(context, null);
+
                           }
                         }
                       },

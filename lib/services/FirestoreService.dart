@@ -8,7 +8,6 @@ class FirestoreService {
 
   Future updateUserData(User user) async {
     try {
-      print("########################");
       await _userCollectionRef.doc(user.id).set(user.toJson());
     } catch (e) {
       print(e.toString());

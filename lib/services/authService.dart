@@ -151,7 +151,6 @@ class AuthService {
       var user =
           (await _firebaseAuth.signInWithCredential(facebookAuthCredential))
               .user;
-      print("*/*/*/Facebook user */*/*");
       //if it is first time
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
       // print(user);

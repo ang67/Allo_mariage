@@ -1,6 +1,7 @@
 import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
 import 'package:allo_mariage/views/authHub/authHub.dart';
+import 'package:allo_mariage/views/base.dart';
 import 'package:allo_mariage/views/theme.dart';
 import 'package:allo_mariage/wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           //'/help': (context) => HelpScreen(),
-          //'/about': (context) => AboutAppPage(),
+          '/base': (context) => BaseScreen(),
+          '/authHub': (context) => AuthHub(),
           '/Wrapper': (context) => Wrapper(),
 
           //
