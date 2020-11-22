@@ -20,6 +20,7 @@ class _SignInState extends State<SignIn> {
   String password = '';
   String error = '';
 
+  bool isObscure = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +91,7 @@ class _SignInState extends State<SignIn> {
                 children: <Widget>[
                   SizedBox(height: 10.0),
                   TextFormField(
-                      cursorColor: Colors.white,
+                      cursorColor: Theme.of(context).accentColor,
                       keyboardType: TextInputType.emailAddress,
                       style: Theme.of(context).textTheme.bodyText1.copyWith(),
                       decoration: InputDecoration(
@@ -108,7 +109,7 @@ class _SignInState extends State<SignIn> {
                                 width: 1.0)),
                         prefixIcon: const Icon(
                           Icons.email,
-                          color: Colors.white,
+                          color: Colors.grey,
                         ),
                       ),
                       validator: (val) =>
@@ -118,30 +119,44 @@ class _SignInState extends State<SignIn> {
                       }),
                   SizedBox(height: 10.0),
                   TextFormField(
-                      cursorColor: Colors.white,
+                      cursorColor: Theme.of(context).accentColor,
                       style: Theme.of(context).textTheme.bodyText1.copyWith(),
                       decoration: InputDecoration(
-                        hintText: ' Saisir mot de passe...',
-                        hintStyle: TextStyle(
-                            color: Colors.black38,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black38, width: 0.5)),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Theme.of(context).accentColor,
-                                width: 1.0)),
-                        prefixIcon: const Icon(
-                          Icons.lock,
-                          color: Colors.white,
-                        ),
-                      ),
+                          hintText: ' Saisir mot de passe...',
+                          hintStyle: TextStyle(
+                              color: Colors.black38,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 14),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.black38, width: 0.5)),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).accentColor,
+                                  width: 1.0)),
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: Colors.grey,
+                          ),
+                          suffixIcon: isObscure
+                              ? IconButton(
+                                  icon: Icon(Icons.visibility_off,
+                                      color: Colors.grey),
+                                  onPressed: () {
+                                    setState(() => isObscure = false);
+                                  },
+                                )
+                              : IconButton(
+                                  icon: Icon(Icons.visibility,
+                                      color: Colors.grey),
+                                  onPressed: () {
+                                    setState(() => isObscure = true);
+                                  },
+                                )),
                       validator: (val) => val.length < 6
                           ? 'Entrez au moins 6 caractères !'
                           : null,
-                      obscureText: true,
+                      obscureText: isObscure,
                       onChanged: (val) {
                         setState(() => password = val);
                       }),

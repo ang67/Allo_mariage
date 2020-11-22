@@ -15,11 +15,23 @@ class FirestoreService {
     }
   }
 
-  Future getUser(String uid) async {
+  Future<DocumentSnapshot> getUser(String uid) async {
     try {
-      var userData = await _userCollectionRef.doc(uid).get();
-      return User.fromJson(userData.data());
+      var a;
+      await _userCollectionRef
+          .doc(uid)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          //print('Document data: ${documentSnapshot.data()}');
+          a = documentSnapshot;
+        } else {
+          print('Document does not exist on the database');
+        }
+      });
+      return a;
     } catch (e) {
+      print(e.message);
       return e.message;
     }
   }

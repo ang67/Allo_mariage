@@ -1,7 +1,7 @@
-import 'package:allo_mariage/views/My_events/myEvents.dart';
+import 'package:allo_mariage/views/More/more.dart';
 import 'package:allo_mariage/views/Publishing/Publishing.dart';
-import 'package:allo_mariage/views/account/account.dart';
 import 'package:allo_mariage/views/home/home.dart';
+import 'package:allo_mariage/views/providers/providers.dart';
 import 'package:flutter/material.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class _BaseScreenState extends State<BaseScreen> {
   int _currentTabIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final _kTabPages = <Widget>[Home(), MyEvents(), Publishing(), Account()];
+    final _kTabPages = <Widget>[Home(), Providers(), Publishing(), More()];
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
         icon: Icon(
@@ -23,15 +23,14 @@ class _BaseScreenState extends State<BaseScreen> {
         ),
         label: 'Accueil',
       ),
-      BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_border), label: 'Mes Events'),
+      BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Prestataires'),
       BottomNavigationBarItem(
         icon: Icon(Icons.add_to_home_screen),
         label: 'Publier',
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.person_outline),
-        label: 'Compte',
+        icon: Icon(Icons.more_horiz),
+        label: 'Plus',
       ),
     ];
     assert(_kTabPages.length == _kBottmonNavBarItems.length);
