@@ -11,17 +11,18 @@ class AuthService {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FacebookAuth _facebookAuth = FacebookAuth.instance;
   final FirestoreService _firestoreService = FirestoreService();
-  //models.User _currentUser;
+  models.User _currentUser;
 
-  // Future<models.User> currentUser(String uid) async {
-  //   return await _firestoreService.getUser(uid);
-  // }
+  models.User get currentUser {
+    return this._currentUser;
+  }
 
-  // Future _populateCurrentUser(User user) async {
-  //   if (user != null) {
-  //     _currentUser = await _firestoreService.getUser(user.uid);
-  //   }
-  // }
+  Future _populateCurrentUser(User user) async {
+    if (user != null) {
+      this._currentUser = models.User.fromJson(
+          (await _firestoreService.getUser(user.uid)).data());
+    }
+  }
 
   /// Changed to idTokenChanges as it updates depending on more cases.
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
@@ -49,14 +50,14 @@ class AuthService {
        """);
       UserCredential result = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-      //User fireBaseUser = result.user;
+      User fireBaseUser = result.user;
       _firestoreService.updateUserData(models.User(
           id: result.user.uid,
           name: name,
           telephone: telephone,
           email: email,
           role: role));
-      //await _populateCurrentUser(fireBaseUser);
+      await _populateCurrentUser(fireBaseUser);
       return "Signed up";
     } catch (e) {
       print(e.toString());
@@ -66,8 +67,10 @@ class AuthService {
 
   Future<String> signIn({String email, String password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+      User fireBaseUser = result.user;
+      await _populateCurrentUser(fireBaseUser);
       return "Signed in";
     } on FirebaseAuthException catch (e) {
       print('******************');
@@ -88,7 +91,7 @@ class AuthService {
           accessToken: googleSignInAuthentication.accessToken);
 
       var user = (await _firebaseAuth.signInWithCredential(credential)).user;
-
+      await _populateCurrentUser(user);
       //if it is first time
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
       // print(user);
@@ -151,6 +154,7 @@ class AuthService {
       var user =
           (await _firebaseAuth.signInWithCredential(facebookAuthCredential))
               .user;
+      await _populateCurrentUser(user);
       //if it is first time
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
       // print(user);

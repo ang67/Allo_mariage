@@ -25,8 +25,12 @@ class _AuthHubState extends State<AuthHub> {
         body: Center(
           child: Stack(
             children: <Widget>[
+              Container(
+                  decoration: BoxDecoration(
+                color: Colors.black,
+              )),
               Opacity(
-                opacity: 1,
+                opacity: 0.8,
                 child: Image.network(
                   'https://i.la-croix.com/729x486/smart/2018/03/01/1200917464/233-725-mariages-heterosexuels-homosexuels-celebres-2016_0.jpg',
                   fit: BoxFit.cover,
@@ -107,7 +111,7 @@ class _AuthHubState extends State<AuthHub> {
                         'Se connecter',
                         style: TextStyle(
                             fontSize: 15,
-                            color: Colors.pink,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -117,7 +121,7 @@ class _AuthHubState extends State<AuthHub> {
                         'Me connecter plus tard',
                         style: TextStyle(
                             fontSize: 15,
-                            color: Colors.pink,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
                       onPressed: () {

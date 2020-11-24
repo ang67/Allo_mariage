@@ -23,7 +23,8 @@ class _BaseScreenState extends State<BaseScreen> {
         ),
         label: 'Accueil',
       ),
-      BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Prestataires'),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.person_search_outlined), label: 'Prestataires'),
       BottomNavigationBarItem(
         icon: Icon(Icons.add_to_home_screen),
         label: 'Publier',
