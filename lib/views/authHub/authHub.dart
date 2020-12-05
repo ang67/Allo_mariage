@@ -1,5 +1,6 @@
 import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
+import 'package:allo_mariage/views/auth/authenticate.dart';
 import 'package:allo_mariage/views/auth/register.dart';
 import 'package:allo_mariage/views/auth/signIn.dart';
 import 'package:allo_mariage/views/base.dart';
@@ -87,7 +88,7 @@ class _AuthHubState extends State<AuthHub> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return Register();
+                              return Authenticate(signIn: false);
                             },
                           ),
                         );
@@ -102,7 +103,7 @@ class _AuthHubState extends State<AuthHub> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return SignIn();
+                              return Authenticate(signIn: true);
                             },
                           ),
                         );

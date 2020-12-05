@@ -2,10 +2,13 @@ import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
 import 'package:allo_mariage/views/auth/signIn.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
+  final Function toggleView;
+  Register({this.toggleView});
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -72,14 +75,15 @@ class _RegisterState extends State<Register> {
             children: <Widget>[
               FlatButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return SignIn();
-                      },
-                    ),
-                  );
+                  widget.toggleView();
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) {
+                  //       return SignIn();
+                  //     },
+                  //   ),
+                  // );
                 },
                 child: Text('Connection',
                     style: Theme.of(context)
@@ -285,19 +289,29 @@ class _RegisterState extends State<Register> {
                           : () async {
                               if (_formKey.currentState.validate()) {
                                 setState(() => loading = true);
-                                var result = context.read<AuthService>().signUp(
-                                    name: name,
-                                    email: email,
-                                    password: password,
-                                    telephone: telephone,
-                                    role: role);
-                                if (result == null) {
-                                  setState(() => error =
-                                      'Impossible de se connecter avec cet identifiant !');
-                                  loading = false;
-                                } else {
-                                  //Navigator.pop(context, null);
-                                }
+                                var result = context
+                                    .read<AuthService>()
+                                    .signUp(
+                                        name: name,
+                                        email: email,
+                                        password: password,
+                                        telephone: telephone,
+                                        role: role)
+                                    .then((value) => {
+                                          if (value == null)
+                                            {
+                                              setState(() => error =
+                                                  'Entrez un email ou numéro de téléphone valide !')
+                                            }
+                                          else
+                                            {
+                                              // Wrap Navigator with SchedulerBinding to wait for rendering state before navigating
+                                              SchedulerBinding.instance
+                                                  .addPostFrameCallback((_) {
+                                                Navigator.pop(context, null);
+                                              })
+                                            }
+                                        });
                               }
                             },
                       color: Theme.of(context).accentColor,

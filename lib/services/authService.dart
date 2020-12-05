@@ -42,12 +42,6 @@ class AuthService {
       String telephone,
       String role}) async {
     try {
-      print(""" $name,
-      $email,
-        $password,
-        $telephone,
-        $role
-       """);
       UserCredential result = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       User fireBaseUser = result.user;
@@ -94,8 +88,6 @@ class AuthService {
       await _populateCurrentUser(user);
       //if it is first time
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
-      // print(user);
-      // print('$firstTime, $now, ${user.metadata.creationTime}');
       firstTime
           ? _firestoreService.updateUserData(models.User(
               id: user.uid,
@@ -111,34 +103,6 @@ class AuthService {
       return null;
     }
   }
-
-  // Future facebookLogIn() async {
-  //   final facebookLogin = FacebookLogin();
-  //   final result = await facebookLogin.logInWithReadPermissions(['email']);
-  //   final FacebookLoginResult facebookLoginResult =
-  //       await FacebookSignIn().logInWithReadPermissions(['email']);
-
-  //   switch (facebookLoginResult.status) {
-  //     case FacebookLoginStatus.loggedIn:
-  //       // Sign the user in with the credential
-
-  //       final FacebookAccessToken accessToken = facebookLoginResult.accessToken;
-  //       FacebookAuthCredential facebookAuthCredential =
-  //           FacebookAuthProvider.credential((accessToken.toString()));
-
-  //       var result =
-  //           await _firebaseAuth.signInWithCredential(facebookAuthCredential);
-  //       return result.user;
-
-  //     case FacebookLoginStatus.cancelledByUser:
-  //       print('Login cancelled by the user.');
-  //       break;
-  //     case FacebookLoginStatus.error:
-  //       print('Something went wrong with the login process.\n'
-  //           'Here\'s the error Facebook gave us: ${facebookLoginResult.errorMessage}');
-  //       break;
-  //   }
-  // }
 
   Future facebookLogIn() async {
     try {
@@ -157,8 +121,6 @@ class AuthService {
       await _populateCurrentUser(user);
       //if it is first time
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
-      // print(user);
-      // print('$firstTime, $now, ${user.metadata.creationTime}');
       firstTime
           ? _firestoreService.updateUserData(models.User(
               id: user.uid,
@@ -167,7 +129,6 @@ class AuthService {
               telephone: user.phoneNumber,
               role: 'Invité'))
           : print('');
-      //print(user);
       return user;
     } catch (e) {
       print(e.toString());

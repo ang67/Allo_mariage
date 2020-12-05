@@ -1,5 +1,4 @@
-import 'package:allo_mariage/utils/ui_constantes.dart';
-import 'package:allo_mariage/views/auth/signIn.dart';
+import 'package:allo_mariage/views/auth/authenticate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,7 @@ class _ProvidersState extends State<Providers> {
       setState(() {
         loading = true;
       });
-      return SignIn();
+      return Authenticate(signIn: true);
     } else {
       return Scaffold(
           appBar: AppBar(

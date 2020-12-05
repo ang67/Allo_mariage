@@ -1,4 +1,3 @@
-import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/views/widgets/search/search_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

@@ -1,12 +1,14 @@
 import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
 import 'package:allo_mariage/views/auth/passewordReset.dart';
-import 'package:allo_mariage/views/auth/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/scheduler.dart';
 
 class SignIn extends StatefulWidget {
+  final Function toggleView;
+  SignIn({this.toggleView});
   @override
   _SignInState createState() => _SignInState();
 }
@@ -67,14 +69,15 @@ class _SignInState extends State<SignIn> {
               Flexible(
                 child: FlatButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return Register();
-                        },
-                      ),
-                    );
+                    widget.toggleView();
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) {
+                    //       return Register();
+                    //     },
+                    //   ),
+                    // );
                   },
                   child: Text('Nouveau compte',
                       style: Theme.of(context)
@@ -183,19 +186,27 @@ class _SignInState extends State<SignIn> {
                         if (_formKey.currentState.validate()) {
                           setState(() => loading = true);
 
-                          var result = context.read<AuthService>().signIn(
+                          var result = context
+                              .read<AuthService>()
+                              .signIn(
                                 email: email,
                                 password: password,
-                              );
-                          if (result == null) {
-                            setState(() => error =
-                                'Entrez un email ou numéro de téléphone valide !');
-                            loading = false;
-                            print(error);
-                          } else {
-                            //Navigator.pop(context, null);
-
-                          }
+                              )
+                              .then((value) => {
+                                    if (value == null)
+                                      {
+                                        setState(() => error =
+                                            'Entrez un email ou numéro de téléphone valide !')
+                                      }
+                                    else
+                                      {
+                                        // Wrap Navigator with SchedulerBinding to wait for rendering state before navigating
+                                        SchedulerBinding.instance
+                                            .addPostFrameCallback((_) {
+                                          Navigator.pop(context, null);
+                                        })
+                                      }
+                                  });
                         }
                       },
                       color: Theme.of(context).accentColor,
