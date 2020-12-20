@@ -70,14 +70,6 @@ class _SignInState extends State<SignIn> {
                 child: FlatButton(
                   onPressed: () {
                     widget.toggleView();
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return Register();
-                    //     },
-                    //   ),
-                    // );
                   },
                   child: Text('Nouveau compte',
                       style: Theme.of(context)

@@ -1,8 +1,6 @@
 import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
 import 'package:allo_mariage/views/auth/authenticate.dart';
-import 'package:allo_mariage/views/auth/register.dart';
-import 'package:allo_mariage/views/auth/signIn.dart';
 import 'package:allo_mariage/views/base.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

@@ -18,6 +18,7 @@ class AuthService {
   }
 
   Future _populateCurrentUser(User user) async {
+    print('ffff');
     if (user != null) {
       this._currentUser = models.User.fromJson(
           (await _firestoreService.getUser(user.uid)).data());
@@ -85,7 +86,8 @@ class AuthService {
           accessToken: googleSignInAuthentication.accessToken);
 
       var user = (await _firebaseAuth.signInWithCredential(credential)).user;
-      await _populateCurrentUser(user);
+      //await _populateCurrentUser(user);//problem here ??????????????
+
       //if it is first time
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
       firstTime
@@ -95,7 +97,7 @@ class AuthService {
               email: user.email,
               telephone: user.phoneNumber,
               role: 'Invité'))
-          : print('');
+          : print('nonononon');
 
       return user;
     } catch (e) {
@@ -118,7 +120,7 @@ class AuthService {
       var user =
           (await _firebaseAuth.signInWithCredential(facebookAuthCredential))
               .user;
-      await _populateCurrentUser(user);
+      //await _populateCurrentUser(user);
       //if it is first time
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
       firstTime

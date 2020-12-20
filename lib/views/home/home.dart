@@ -30,9 +30,6 @@ class _HomeState extends State<Home> {
 
     int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(APP_NAME),
-      // ),
       body: ListView(children: <Widget>[
         Container(
           decoration: BoxDecoration(
@@ -68,6 +65,7 @@ class _HomeState extends State<Home> {
                     ),
                     SizedBox(height: 10),
                     OutlineButton(
+                        highlightedBorderColor: Colors.white54,
                         borderSide: BorderSide(width: 1.0, color: Colors.white),
                         onPressed: () {},
                         child: Text(
