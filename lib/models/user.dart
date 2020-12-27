@@ -3,7 +3,7 @@ class User {
   final String name;
   final String telephone;
   final String email;
-  final String role;
+  final int role;
   final String photoURL;
   final DateTime lastSignInTime;
   final DateTime creationTime;

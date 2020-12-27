@@ -1,3 +1,4 @@
+import 'package:allo_mariage/utils/app_data_constantes.dart';
 import 'package:allo_mariage/views/base.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -68,7 +69,7 @@ class _AccountState extends State<Account> {
                                 title: Text("Téléphone: ${data['telephone']}")),
                             ListTile(
                                 leading: null,
-                                title: Text("Rôle: ${data['role']}")),
+                                title: Text("Rôle: ${ROLES[data['role']]}")),
                           ]);
                     } else {
                       return CircularProgressIndicator(

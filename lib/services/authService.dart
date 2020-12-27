@@ -42,7 +42,7 @@ class AuthService {
       String email,
       String password,
       String telephone,
-      String role}) async {
+      int role}) async {
     try {
       UserCredential result = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -56,7 +56,7 @@ class AuthService {
           photoURL: null,
           lastSignInTime: DateTime.now(),
           creationTime: DateTime.now()));
-      await _populateCurrentUser(fireBaseUser);
+      //await _populateCurrentUser(fireBaseUser);
       return "Signed up";
     } catch (e) {
       print(e.toString());
@@ -113,7 +113,7 @@ class AuthService {
             name: user.displayName,
             email: user.email,
             telephone: user.phoneNumber,
-            role: 'Invité',
+            role: 0,
             photoURL: user.photoURL,
             lastSignInTime: user.metadata.lastSignInTime,
             creationTime: user.metadata.creationTime));
@@ -165,7 +165,7 @@ class AuthService {
             name: user.displayName,
             email: user.email,
             telephone: user.phoneNumber,
-            role: 'Invité',
+            role: 0,
             photoURL: user.photoURL,
             lastSignInTime: user.metadata.lastSignInTime,
             creationTime: user.metadata.creationTime));

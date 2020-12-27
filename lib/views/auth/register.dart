@@ -1,4 +1,5 @@
 import 'package:allo_mariage/services/authService.dart';
+import 'package:allo_mariage/utils/app_data_constantes.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -20,18 +21,11 @@ class _RegisterState extends State<Register> {
   String telephone = '';
   String email = '';
   String password = '';
-  String role = '';
+  int role = 0;
 
   String error = '';
   bool isObscure = true;
   bool _termsChecked = false;
-
-  List<String> roles = ['Mariée', 'Marié', 'Famille', 'Invité', 'Prestataire'];
-  @override
-  void initState() {
-    super.initState();
-    role = roles[0];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -240,8 +234,8 @@ class _RegisterState extends State<Register> {
                   // dropdown
                   DropdownButtonFormField<String>(
                     style: Theme.of(context).textTheme.bodyText1,
-                    value: role,
-                    items: [...roles]
+                    value: ROLES[role],
+                    items: [...ROLES]
                         .map((label) => DropdownMenuItem(
                               child: Text(label.toString()),
                               value: label,
@@ -250,7 +244,7 @@ class _RegisterState extends State<Register> {
                     hint: Text('Rôle'),
                     onChanged: (value) {
                       setState(() {
-                        role = value;
+                        role = ROLES.indexOf(value);
                       });
                     },
                     decoration: InputDecoration(
