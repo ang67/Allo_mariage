@@ -15,18 +15,18 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
     var userData = (context.watch<models.User>());
-    print(userData);
-    print(userData);
-    print(userData);
-    print(userData);
-    print(userData);
-    print(userData);
-    print(userData);
-    print(userData);
-    print(userData);
-    print(userData);
-    print('///');
-    print(userData);
+    // print(userData);
+    // print(userData);
+    // print(userData);
+    // print(userData);
+    // print(userData);
+    // print(userData);
+    // print(userData);
+    // print(userData);
+    // print(userData);
+    // print(userData);
+    // print('///');
+    // print(userData);
 
     int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 * 60;
     return Scaffold(

@@ -1,5 +1,6 @@
 import 'package:allo_mariage/services/FirestoreService.dart';
 import 'package:allo_mariage/models/user.dart' as models;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -30,8 +31,8 @@ class AuthService {
 
   // SignOut
   Future<void> signOut() async {
-    await _facebookAuth.logOut();
     await _googleSignIn.signOut();
+    await _facebookAuth.logOut();
     await _firebaseAuth.signOut();
   }
 
@@ -46,12 +47,15 @@ class AuthService {
       UserCredential result = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       User fireBaseUser = result.user;
-      _firestoreService.updateUserData(models.User(
+      _firestoreService.setUserData(models.User(
           id: result.user.uid,
           name: name,
           telephone: telephone,
           email: email,
-          role: role));
+          role: role,
+          photoURL: null,
+          lastSignInTime: DateTime.now(),
+          creationTime: DateTime.now()));
       await _populateCurrentUser(fireBaseUser);
       return "Signed up";
     } catch (e) {
@@ -65,7 +69,19 @@ class AuthService {
       UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       User fireBaseUser = result.user;
-      await _populateCurrentUser(fireBaseUser);
+
+      //await _populateCurrentUser(fireBaseUser);
+      _firestoreService.getUser(fireBaseUser.uid).then((userData) {
+        _firestoreService.updateUserData(models.User(
+            id: userData['id'],
+            name: userData['name'],
+            email: userData['email'],
+            telephone: userData['telephone'],
+            role: userData['role'],
+            photoURL: userData['photoURL'],
+            lastSignInTime: DateTime.now(), //+
+            creationTime: userData['creationTime'].toDate()));
+      });
       return "Signed in";
     } on FirebaseAuthException catch (e) {
       print('******************');
@@ -90,14 +106,33 @@ class AuthService {
 
       //if it is first time
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
-      firstTime
-          ? _firestoreService.updateUserData(models.User(
-              id: user.uid,
-              name: user.displayName,
-              email: user.email,
-              telephone: user.phoneNumber,
-              role: 'Invité'))
-          : print('nonononon');
+
+      if (firstTime) {
+        _firestoreService.setUserData(models.User(
+            id: user.uid,
+            name: user.displayName,
+            email: user.email,
+            telephone: user.phoneNumber,
+            role: 'Invité',
+            photoURL: user.photoURL,
+            lastSignInTime: user.metadata.lastSignInTime,
+            creationTime: user.metadata.creationTime));
+      } else {
+        _firestoreService.getUser(user.uid).then((userData) {
+          _firestoreService.updateUserData(models.User(
+              id: userData['id'],
+              name: userData['name'],
+              email: userData['email'],
+              telephone: userData['telephone'],
+              role: userData['role'],
+              photoURL: userData['photoURL'],
+              lastSignInTime: DateTime.now(), //+
+              creationTime: user.metadata.creationTime));
+        });
+      }
+
+      // _firestoreService.updateUserData(models.User(
+      //   id: user.uid, lastSignInTime: user.metadata.lastSignInTime))
 
       return user;
     } catch (e) {
@@ -122,15 +157,32 @@ class AuthService {
               .user;
       //await _populateCurrentUser(user);
       //if it is first time
+      print(user);
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
-      firstTime
-          ? _firestoreService.updateUserData(models.User(
-              id: user.uid,
-              name: user.displayName,
-              email: user.email,
-              telephone: user.phoneNumber,
-              role: 'Invité'))
-          : print('');
+      if (firstTime) {
+        _firestoreService.setUserData(models.User(
+            id: user.uid,
+            name: user.displayName,
+            email: user.email,
+            telephone: user.phoneNumber,
+            role: 'Invité',
+            photoURL: user.photoURL,
+            lastSignInTime: user.metadata.lastSignInTime,
+            creationTime: user.metadata.creationTime));
+      } else {
+        _firestoreService.getUser(user.uid).then((userData) {
+          _firestoreService.updateUserData(models.User(
+              id: userData['id'],
+              name: userData['name'],
+              email: userData['email'],
+              telephone: userData['telephone'],
+              role: userData['role'],
+              photoURL: userData['photoURL'],
+              lastSignInTime: DateTime.now(), //+
+              creationTime: user.metadata.creationTime));
+        });
+      }
+
       return user;
     } catch (e) {
       print(e.toString());

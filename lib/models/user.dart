@@ -4,6 +4,9 @@ class User {
   final String telephone;
   final String email;
   final String role;
+  final String photoURL;
+  final DateTime lastSignInTime;
+  final DateTime creationTime;
 
   User({
     this.id,
@@ -11,6 +14,9 @@ class User {
     this.telephone,
     this.email,
     this.role,
+    this.photoURL,
+    this.lastSignInTime,
+    this.creationTime,
   });
 
   User.fromJson(Map<String, dynamic> json)
@@ -18,13 +24,19 @@ class User {
         name = json['name'],
         telephone = json['telephone'],
         email = json['email'],
-        role = json['role'];
+        role = json['role'],
+        photoURL = json['photoURL'],
+        lastSignInTime = json['lastSignInTime'],
+        creationTime = json['creationTime'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
         'telephone': telephone,
         'email': email,
-        'role': role
+        'role': role,
+        'photoURL': photoURL,
+        'lastSignInTime': lastSignInTime,
+        'creationTime': creationTime
       };
 }

@@ -8,6 +8,15 @@ class FirestoreService {
 
   Future updateUserData(User user) async {
     try {
+      await _userCollectionRef.doc(user.id).update(user.toJson());
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future setUserData(User user) async {
+    try {
       await _userCollectionRef.doc(user.id).set(user.toJson());
     } catch (e) {
       print(e.toString());
@@ -25,6 +34,7 @@ class FirestoreService {
         if (documentSnapshot.exists) {
           //print('Document data: ${documentSnapshot.data()}');
           a = documentSnapshot;
+          //print(a);
         } else {
           print('Document does not exist on the database');
         }
