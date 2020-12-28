@@ -1,6 +1,8 @@
+import 'package:allo_mariage/services/FirestoreService.dart';
 import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
 import 'package:allo_mariage/views/auth/passewordReset.dart';
+import 'package:allo_mariage/views/widgets/dialogs/signDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +16,14 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  // @override
+  // void didChangeDependencies() {
+  //   debugPrint('******************Child widget: didChangeDependencies(), counter = ');
+  //   super.didChangeDependencies();
+  // }
+
   //final AuthService _auth = AuthService();
+  final FirestoreService _firestoreService = FirestoreService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
@@ -41,7 +50,6 @@ class _SignInState extends State<SignIn> {
             Buttons.Facebook,
             text: 'Continuer avec Facebook',
             onPressed: () {
-              print('Continuer avec Facebook');
               context.read<AuthService>().facebookLogIn();
             },
           ),

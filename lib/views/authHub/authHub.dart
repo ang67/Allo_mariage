@@ -1,7 +1,9 @@
+import 'package:allo_mariage/services/FirestoreService.dart';
 import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
 import 'package:allo_mariage/views/auth/authenticate.dart';
 import 'package:allo_mariage/views/base.dart';
+import 'package:allo_mariage/views/widgets/dialogs/signDialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -14,6 +16,7 @@ class AuthHub extends StatefulWidget {
 
 class _AuthHubState extends State<AuthHub> {
   bool signedAnonymously = false;
+  final FirestoreService _firestoreService = FirestoreService();
   @override
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
@@ -64,18 +67,30 @@ class _AuthHubState extends State<AuthHub> {
                       text: 'Continuer avec Facebook',
                       onPressed: () {
                         print('Continuer avec Facebook');
-                        context.read<AuthService>().facebookLogIn();
+                        context
+                            .read<AuthService>()
+                            .facebookLogIn()
+                            .then((user) {
+                          _firestoreService.getUser(user.uid).then((userData) {
+                            if (userData['role'] == null) {
+                              signDialog(context);
+                            }
+                          });
+                        });
                       },
                     ),
 
                     //google signIn button
-                    SignInButton(
-                      Buttons.Google,
-                      text: 'Continuer avec Google',
-                      onPressed: () {
-                        context.read<AuthService>().googleSignIn();
-                      },
-                    ),
+                    SignInButton(Buttons.Google, text: 'Continuer avec Google',
+                        onPressed: () {
+                      context.read<AuthService>().googleSignIn().then((user) {
+                        _firestoreService.getUser(user.uid).then((userData) {
+                          if (userData['role'] == null) {
+                            signDialog(context);
+                          }
+                        });
+                      });
+                    }),
                     //default connection button
                     SignInButtonBuilder(
                       text: "S'inscrire avec un email",

@@ -2,6 +2,7 @@ import 'package:allo_mariage/services/FirestoreService.dart';
 import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/views/account/account.dart';
 import 'package:allo_mariage/views/auth/authenticate.dart';
+import 'package:allo_mariage/views/widgets/dialogs/signDialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +85,7 @@ class _MoreState extends State<More> {
                         Icon(Icons.emoji_objects_outlined, color: Colors.grey),
                     title: Text('Inspirations',
                         style: Theme.of(context).textTheme.bodyText1),
-                    onTap: () => {}),
+                    onTap: () => {signDialog(context)}),
                 ListTile(
                     leading: Icon(Icons.forum_outlined, color: Colors.grey),
                     title: Text('Communauté',

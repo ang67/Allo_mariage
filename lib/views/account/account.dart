@@ -69,7 +69,8 @@ class _AccountState extends State<Account> {
                                 title: Text("Téléphone: ${data['telephone']}")),
                             ListTile(
                                 leading: null,
-                                title: Text("Rôle: ${ROLES[data['role']]}")),
+                                title: Text(
+                                    "Rôle: ${data['role'] != null ? ROLES[data['role']] : null}")),
                           ]);
                     } else {
                       return CircularProgressIndicator(

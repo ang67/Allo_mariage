@@ -1,6 +1,8 @@
+import 'package:allo_mariage/services/FirestoreService.dart';
 import 'package:allo_mariage/services/authService.dart';
 import 'package:allo_mariage/utils/app_data_constantes.dart';
 import 'package:allo_mariage/utils/ui_constantes.dart';
+import 'package:allo_mariage/views/widgets/dialogs/signDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -14,6 +16,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final FirestoreService _firestoreService = FirestoreService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 

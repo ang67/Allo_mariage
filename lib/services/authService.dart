@@ -1,6 +1,5 @@
 import 'package:allo_mariage/services/FirestoreService.dart';
 import 'package:allo_mariage/models/user.dart' as models;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,13 +17,13 @@ class AuthService {
     return this._currentUser;
   }
 
-  Future _populateCurrentUser(User user) async {
-    print('ffff');
-    if (user != null) {
-      this._currentUser = models.User.fromJson(
-          (await _firestoreService.getUser(user.uid)).data());
-    }
-  }
+  // Future _populateCurrentUser(User user) async {
+  //   print('ffff');
+  //   if (user != null) {
+  //     this._currentUser = models.User.fromJson(
+  //         (await _firestoreService.getUser(user.uid)).data());
+  //   }
+  // }
 
   /// Changed to idTokenChanges as it updates depending on more cases.
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
@@ -48,7 +47,7 @@ class AuthService {
           .createUserWithEmailAndPassword(email: email, password: password);
       User fireBaseUser = result.user;
       _firestoreService.setUserData(models.User(
-          id: result.user.uid,
+          id: fireBaseUser.uid,
           name: name,
           telephone: telephone,
           email: email,
@@ -113,7 +112,7 @@ class AuthService {
             name: user.displayName,
             email: user.email,
             telephone: user.phoneNumber,
-            role: 0,
+            role: null,
             photoURL: user.photoURL,
             lastSignInTime: user.metadata.lastSignInTime,
             creationTime: user.metadata.creationTime));
@@ -165,7 +164,7 @@ class AuthService {
             name: user.displayName,
             email: user.email,
             telephone: user.phoneNumber,
-            role: 0,
+            role: null,
             photoURL: user.photoURL,
             lastSignInTime: user.metadata.lastSignInTime,
             creationTime: user.metadata.creationTime));
