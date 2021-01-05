@@ -85,7 +85,7 @@ class _MoreState extends State<More> {
                         Icon(Icons.emoji_objects_outlined, color: Colors.grey),
                     title: Text('Inspirations',
                         style: Theme.of(context).textTheme.bodyText1),
-                    onTap: () => {signDialog(context)}),
+                    onTap: () => {}),
                 ListTile(
                     leading: Icon(Icons.forum_outlined, color: Colors.grey),
                     title: Text('Communauté',

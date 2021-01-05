@@ -1,13 +1,18 @@
+import 'package:allo_mariage/models/event.dart';
+import 'package:allo_mariage/services/FirestoreService.dart';
 import 'package:allo_mariage/utils/app_data_constantes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 
-Future signDialog(
-  BuildContext context,
-) {
+Future signDialog(BuildContext context, String userId) {
   final _formKey = GlobalKey<FormState>();
   int role = 0;
-  DateTime weddingDate = DateTime.now();
+  DateTime date;
+  final FirestoreService _firestoreService = FirestoreService();
+  final CollectionReference _userCollectionRef =
+      FirebaseFirestore.instance.collection('users');
+
   return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -69,7 +74,7 @@ Future signDialog(
                         ),
                         /******************************** */
 
-                        ([0, 1, 3, 4].contains(role))
+                        ([0, 1].contains(role))
                             ? Padding(
                                 padding: EdgeInsets.all(1.0),
                                 child: Column(
@@ -80,26 +85,23 @@ Future signDialog(
                                             .textTheme
                                             .bodyText1),
                                     DateTimePicker(
-                                      calendarTitle: 'Date du mariage',
-                                      type: DateTimePickerType.dateTimeSeparate,
-                                      dateMask: 'd MMM yyyy',
-                                      initialValue: null,
-                                      firstDate: DateTime.now(),
-                                      lastDate: DateTime(2100),
-                                      icon: Icon(Icons.event),
-                                      dateLabelText: 'Jour',
-                                      timeLabelText: "Heure",
-                                      validator: (val) {
-                                        return null;
-                                      },
-                                      onSaved: (val) {
-                                        setState(() {
-                                          weddingDate = DateTime.parse(val);
-                                          print('weddingDate');
-                                          print(weddingDate);
-                                        });
-                                      },
-                                    ),
+                                        calendarTitle: 'Date du mariage',
+                                        type:
+                                            DateTimePickerType.dateTimeSeparate,
+                                        dateMask: 'd MMM yyyy',
+                                        initialValue: null,
+                                        firstDate: DateTime.now(),
+                                        lastDate: DateTime(2100),
+                                        icon: Icon(Icons.event),
+                                        dateLabelText: 'Jour',
+                                        timeLabelText: "Heure",
+                                        validator: (val) {
+                                          return null;
+                                        },
+                                        onSaved: (val) {
+                                          setState(
+                                              () => date = DateTime.parse(val));
+                                        }),
                                   ],
                                 ),
                               )
@@ -117,6 +119,36 @@ Future signDialog(
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
+                                _firestoreService
+                                    .getUser(userId)
+                                    .then((userData) {
+                                  _userCollectionRef
+                                      .doc(userId)
+                                      .update({'role': role});
+
+                                  if ([0, 1].contains(role)) {
+                                    var a = _firestoreService
+                                        .updateEventData(Event(
+                                          eventId: userId +
+                                              '${DateTime.now().millisecondsSinceEpoch}',
+                                          brideName: role == 0
+                                              ? userData['name']
+                                              : null,
+                                          brideId:
+                                              role == 0 ? userData['id'] : null,
+                                          groomName: role == 1
+                                              ? userData['name']
+                                              : null,
+                                          groomId:
+                                              role == 1 ? userData['id'] : null,
+                                          budget: null,
+                                          photoURL: null,
+                                          date: date,
+                                        ))
+                                        .then(
+                                            (value) => Navigator.pop(context));
+                                  }
+                                });
                               }
                             },
                           ),

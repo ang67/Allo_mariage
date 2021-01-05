@@ -46,7 +46,7 @@ class AuthService {
       UserCredential result = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       User fireBaseUser = result.user;
-      _firestoreService.setUserData(models.User(
+      _firestoreService.updateUserData(models.User(
           id: fireBaseUser.uid,
           name: name,
           telephone: telephone,
@@ -107,7 +107,7 @@ class AuthService {
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
 
       if (firstTime) {
-        _firestoreService.setUserData(models.User(
+        _firestoreService.updateUserData(models.User(
             id: user.uid,
             name: user.displayName,
             email: user.email,
@@ -159,7 +159,7 @@ class AuthService {
       print(user);
       bool firstTime = now.compareTo(user.metadata.creationTime) < 0;
       if (firstTime) {
-        _firestoreService.setUserData(models.User(
+        _firestoreService.updateUserData(models.User(
             id: user.uid,
             name: user.displayName,
             email: user.email,

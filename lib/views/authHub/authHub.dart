@@ -73,7 +73,7 @@ class _AuthHubState extends State<AuthHub> {
                             .then((user) {
                           _firestoreService.getUser(user.uid).then((userData) {
                             if (userData['role'] == null) {
-                              signDialog(context);
+                              signDialog(context, user.uid);
                             }
                           });
                         });
@@ -86,7 +86,7 @@ class _AuthHubState extends State<AuthHub> {
                       context.read<AuthService>().googleSignIn().then((user) {
                         _firestoreService.getUser(user.uid).then((userData) {
                           if (userData['role'] == null) {
-                            signDialog(context);
+                            signDialog(context, user.uid);
                           }
                         });
                       });
